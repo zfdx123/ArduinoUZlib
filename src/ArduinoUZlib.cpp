@@ -12,7 +12,7 @@ void exit_error(const char *what)
 // https://github.com/pfalcon/uzlib/blob/master/examples/tgunzip/tgunzip.c
 int32_t ArduinoUZlib::decompress(uint8_t *in_buf, uint32_t in_size, uint8_t *&dest, uint32_t &out_size) {
 	if (in_size < 4) exit_error("file too small");
-	unsigned int len,dlen, outlen;
+	unsigned int len,dlen;
 	unsigned char *source =(unsigned char*)in_buf;
 	
 	int res;
@@ -22,7 +22,6 @@ int32_t ArduinoUZlib::decompress(uint8_t *in_buf, uint32_t in_size, uint8_t *&de
     dlen = 256*dlen + source[len - 3];
     dlen = 256*dlen + source[len - 4];
 
-    outlen = dlen;
 	dlen++;
 	dest = (unsigned char *)malloc(dlen);
     if (dest == NULL) exit_error("memory");
@@ -57,7 +56,7 @@ int32_t ArduinoUZlib::decompress(uint8_t *in_buf, uint32_t in_size, uint8_t *&de
         exit(-res);
     }
 
-    printf("decompressed %lu bytes\n", d.dest - dest);
+    printf("decompressed %td bytes\n", d.dest - dest);
 	out_size= d.dest - dest;
 	return  out_size;
 
